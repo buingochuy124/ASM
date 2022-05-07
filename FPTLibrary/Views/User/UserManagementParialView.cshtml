@@ -1,0 +1,65 @@
+﻿
+@model List<DataAccess.DTO.UserDTO>
+
+
+
+
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                UserAccount
+            </th>
+            <th>
+                UserPassword
+            </th>
+            <th>
+                UserFullName
+            </th>
+
+            <th>
+                UserAddress
+            </th>
+            <th>
+                Role
+            </th>
+            <th>
+                User Detail
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @item.UserAccount
+                </td>
+                <td>
+                    @item.UserPassword
+                </td>
+                <td>
+                    @item.UserFullName
+                </td>
+                <td>
+                    @item.UserAddress
+                </td>
+                <td>
+                    @item.RoleName
+                </td>
+                <td>
+                    <a href="/User/UserDetail?UserID=@item.UserID">Detail</a>
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>

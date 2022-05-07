@@ -48,6 +48,7 @@
     <Compile Include="DAOImpl\OrderDAOImpl.cs" />
     <Compile Include="DAOImpl\OrderDetaiDAOlImpl.cs" />
     <Compile Include="DAOImpl\RoleDAOImpl.cs" />
+    <Compile Include="DAOImpl\StoreDAOImpl.cs" />
     <Compile Include="DAOImpl\UserDAOImpl.cs" />
     <Compile Include="DAO\ICartDAO.cs" />
     <Compile Include="DAO\IBookDAO.cs" />
@@ -56,14 +57,17 @@
     <Compile Include="DAO\IOrderDetailDAO.cs" />
     <Compile Include="DAO\IRole.cs" />
     <Compile Include="DAO\IUserDAO.cs" />
+    <Compile Include="DAO\IStoreDAO.cs" />
     <Compile Include="DTO\BookDTO.cs" />
     <Compile Include="DTO\CartDTO.cs" />
     <Compile Include="DTO\CategoryDTO.cs" />
     <Compile Include="DTO\OrderDetailDTO.cs" />
     <Compile Include="DTO\OrderDTO.cs" />
     <Compile Include="DTO\RoleDTO.cs" />
+    <Compile Include="DTO\StoreDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Libs\Config.cs" />
+    <Compile Include="Libs\MD5.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

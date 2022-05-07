@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO;
+using FPTLibrary.Models;
 using System;
 using System.Web.Mvc;
 
@@ -97,12 +98,18 @@ namespace FPTLibrary.Controllers
                 }
                 else
                 {
+
                     var result = new DataAccess.DAOImpl.BookDAOImpl().Book_GetDetail(BookISBN);
                     return View(result);
 
                 }
             }
         }
+       
 
+        public ActionResult InsertBook()
+        {
+            return View();
+        }
     }
 }

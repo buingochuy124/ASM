@@ -89,9 +89,74 @@ namespace DataAccess.DAOImpl
             }
         }
 
-        public int Book_Create(long BookISBN, string BookName, string Author, double Cost, int Pages, int CategoryID, string Description, string BookImageURL)
+        public int Book_SellBook(long BookISBN, string BookName, string Author, double Cost, int Pages, int CategoryID, string Description, string BookImageURL,int StoreID)
         {
-            throw new NotImplementedException();
+            var result = 0;
+
+
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_CreateBook", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_BookISBN", BookISBN);
+                cmd.Parameters.AddWithValue("@_BookName", BookName);
+                cmd.Parameters.AddWithValue("@_Author", Author);
+                cmd.Parameters.AddWithValue("@_Cost", Cost);
+                cmd.Parameters.AddWithValue("@_Pages", Pages);
+                cmd.Parameters.AddWithValue("@_CategoryID", CategoryID);
+                cmd.Parameters.AddWithValue("@_BookDescription", Description);
+                cmd.Parameters.AddWithValue("@_BookImageURL", BookImageURL);
+                cmd.Parameters.AddWithValue("@_StoreID", StoreID);
+
+
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+
+
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
+
+                return result;
+
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public int Book_Delete(long BookISBN)
+        {
+            var result = 0;
+
+
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_BookDelete", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_BookISBN", BookISBN);
+
+
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+
+
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
+
+                return result;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public BookDTO Book_GetDetail(long BookISBN)

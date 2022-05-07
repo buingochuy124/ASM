@@ -30,7 +30,7 @@ namespace DataAccess.DAOImpl
                         UserFullName = read["UserFullName"].ToString(),
                         UserAddress = read["UserAddress"].ToString(),
                         UserPhoneNumber = read["UserPhoneNumber"].ToString(),
-                        RoleID = int.Parse(read["UserID"].ToString())
+                        RoleID = int.Parse(read["RoleID"].ToString())
                     });
                 }
                 return result;

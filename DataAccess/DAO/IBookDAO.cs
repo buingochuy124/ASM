@@ -7,10 +7,12 @@ namespace DataAccess.DAO
     {
         List<BookDTO> Books_GetList();
 
-        int Book_Create(long BookISBN, string BookName, string Author, double Cost, int Pages, int CategoryID, string Description, string BookImageURL);
+        int Book_SellBook(long BookISBN, string BookName, string Author, double Cost, int Pages, int CategoryID, string Description, string BookImageURL,int StoreID);
 
         BookDTO Book_GetDetail(long BookISBN);
 
         List<BookDTO> Books_GetListByPage(int? PageNumber, int? NumberPerPage);
+
+        int Book_Delete(long BookISBN);
     }
 }

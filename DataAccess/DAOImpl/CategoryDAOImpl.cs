@@ -52,7 +52,31 @@ namespace DataAccess.DAOImpl
 
         public CategoryDTO Category_GetDetailByName(string CategoryName)
         {
-            throw new NotImplementedException();
+            var result = new CategoryDTO();
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+                SqlCommand cmd = new SqlCommand("SP_CategoryGetDetailByName", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@_CategoryName", CategoryName);
+
+
+                var read = cmd.ExecuteReader();
+                while (read.Read())
+                {
+                    result = (new CategoryDTO
+                    {
+                        CategoryID = int.Parse(read["CategoryID"].ToString()),
+                        CategoryName = read["CategoryName"].ToString()
+                    });
+                }
+                return result;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
