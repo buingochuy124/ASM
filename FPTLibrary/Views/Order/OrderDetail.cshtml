@@ -1,0 +1,68 @@
+﻿@model DataAccess.DTO.OrderDTO
+@{
+    ViewBag.Title = "OrderDetail";
+}
+
+<h2>OrderDetail</h2>
+
+
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+
+            <th>
+                BookISBN
+            </th>
+            <th>
+                Quantity
+            </th>
+
+            <th>
+                Cost
+            </th>
+            <th>
+                Book Detail
+            </th>
+
+
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.ListOrderDetail)
+        {
+            <tr>
+
+                <td>
+                    @item.BookISBN
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                <td>
+                    @item.BookCost
+                </td>
+                <td>
+                    <a href="/Book/BookDetail?BookISBN=@item.BookISBN">Detail</a>
+
+                    
+                </td>
+
+
+            </tr>
+        }
+
+
+
+    </tbody>
+</table>
+<p2>Total: @Model.Total</p2>
+
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+
