@@ -111,5 +111,41 @@ namespace DataAccess.DAOImpl
                 throw;
             }
         }
+
+        public int User_Update(string UserAccount, string UserPassword, string UserFullName, string UserAddress, string UserPhoneNumber)
+        {
+            var result = 0;
+
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_UserUpdate", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_UserAccount", UserAccount);
+                cmd.Parameters.AddWithValue("@_UserPassword", UserPassword);
+                cmd.Parameters.AddWithValue("@_UserFullName", UserFullName);
+                cmd.Parameters.AddWithValue("@_UserAddress", UserAddress);
+                cmd.Parameters.AddWithValue("@_UserPhoneNumber", UserPhoneNumber);
+
+
+
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+
+
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
+
+                return result;
+
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }

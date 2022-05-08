@@ -154,7 +154,8 @@ namespace FPTLibrary.Controllers
                         //8
                         var bookImageURL = ws.Cells[rw, 8].Value != null ? ws.Cells[rw, 8].Value.ToString() : string.Empty;
 
-                        var categoryID = new DataAccess.DAOImpl.CategoryDAOImpl().Category_GetDetailByName(categoryName).CategoryID;
+                        var createCategory = new DataAccess.DAOImpl.CategoryDAOImpl().Category_Create(categoryName);
+                        var categoryID = new DataAccess.DAOImpl.CategoryDAOImpl().Category_GetDetailByName(categoryName).CategoryID;                      
                         var result = new DataAccess.DAOImpl.BookDAOImpl().Book_SellBook(long.Parse(bookISBN), title, author, double.Parse(bookCost), int.Parse(bookPages), categoryID, bookDescription, bookImageURL,storeID);
 
                         var err_des = "";

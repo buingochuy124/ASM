@@ -98,7 +98,8 @@ namespace FPTLibrary.Controllers
                 }
                 else
                 {
-                    var cartsOfUser = new DataAccess.DAOImpl.CartDAOImpl().Carts_GetCartByUser(userSession.UserID);
+                    var cartsOfUser = new DataAccess.DAOImpl.CartDAOImpl()
+                        .Carts_GetCartByUser(userSession.UserID);
                     var result = new List<DataAccess.DTO.BookDTO>();
                     foreach (var item in cartsOfUser)
                     {
@@ -149,6 +150,7 @@ namespace FPTLibrary.Controllers
                         .OrderDetail_Create(item.BookISBN, item.Quantity, orderID);
 
                 }
+
 
                 var cartCheckOut = new DataAccess.DAOImpl.CartDAOImpl().Cart_CheckOut(userSession.UserID);
 

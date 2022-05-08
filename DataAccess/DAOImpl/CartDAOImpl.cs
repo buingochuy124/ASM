@@ -79,26 +79,24 @@ namespace DataAccess.DAOImpl
         public int Cart_CheckOut(int UserID)
         {
             var result = 0;
-
-
             try
             {
                 var sqlconn = ConnectDB.GetSqlConnection();
 
-            SqlCommand cmd = new SqlCommand("SP_CartCheckOut", sqlconn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand("SP_CartCheckOut", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@_UserID", UserID);
-
-
-            cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("@_UserID", UserID);
 
 
-            cmd.ExecuteNonQuery();
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
 
-            result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
 
-            return result;
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
+
+                return result;
             }
             catch (System.Exception)
             {

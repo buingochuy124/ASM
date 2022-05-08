@@ -18,7 +18,32 @@ namespace DataAccess.DAOImpl
 
         public int Category_Create(string CategoryName)
         {
-            throw new NotImplementedException();
+            var result = 0;
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_CreateCategory", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_CategoryName", CategoryName);
+
+
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+
+
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
+
+
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public CategoryDTO Category_GetDetailByID(int CategoryID)

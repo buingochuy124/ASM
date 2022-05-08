@@ -31,7 +31,10 @@
                                 <p class="card-text">Pages: @Model[j].Pages</p>
                                 <p class="card-text">ISBN: @Model[j].BookISBN</p>
                                 <p class="card-text">Author: @Model[j].Author</p>
-                                <p class="card-text">Description: @Model[j].BookDescription</p>
+                                <p class="card-text">
+                                    Description: @Model[j].BookDescription.ToString().Substring(0,100) 
+                                    <a href="/Book/BookDetail?BookISBN=@Model[j].BookISBN">Read More...</a>                               
+                                </p>
                             </div>
 
                             <a class="btn btn-primary"

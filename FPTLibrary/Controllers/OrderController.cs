@@ -22,6 +22,11 @@ namespace FPTLibrary.Controllers
                 {
                     if (userSession.RoleID != 2)
                     {
+                        if(userSession.RoleID == 3)
+                        {
+                            var result = new DataAccess.DAOImpl.OrderDAOImpl().Orders_GetListByUser(userSession.UserID);
+
+                        }
                         return RedirectToAction("DoNotHavePermission", "Shared");
                     }
                     else

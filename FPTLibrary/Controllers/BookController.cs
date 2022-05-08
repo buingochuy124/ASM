@@ -92,7 +92,7 @@ namespace FPTLibrary.Controllers
             }
             else
             {
-                if (userSession.RoleID != 2)
+                if (userSession.RoleID != 2 && userSession.RoleID != 3)
                 {
                     return RedirectToAction("DoNotHavePermission", "Shared");
                 }

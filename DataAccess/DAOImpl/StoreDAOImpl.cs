@@ -11,6 +11,40 @@ namespace DataAccess.DAOImpl
 {
     public class StoreDAOImpl : IStoreDAO
     {
+        public int Store_Create(int UserID, string StoreName)
+        {
+            var result = 0;
+
+
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_CreateStore", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_StoreName", StoreName);
+                cmd.Parameters.AddWithValue("@_UserID", UserID);
+
+
+
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+
+
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
+
+                return result;
+
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
         public List<BookDTO> Store_GetBookOfStoreByPage(int? PageNumber, int? NumberPerPage, int StoreID)
         {
             var result = new List<BookDTO>();

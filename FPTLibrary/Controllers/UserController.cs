@@ -1,4 +1,5 @@
 ﻿using DataAccess.DTO;
+using FPTLibrary.Models;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -113,5 +114,40 @@ namespace FPTLibrary.Controllers
             }
 
         }
+        public ActionResult UserEdit(int UserID)
+        {
+            var result = new DataAccess.DAOImpl.UserDAOImpl()
+                .Users_GetList().FirstOrDefault(u => u.RoleID == UserID);
+            return View(result);
+        }
+        public JsonResult UserUpdate(string UserAccount,string UserPassword, string UserFullName,string  UserAddress,string UserPhoneNumber)
+        {
+            var returnData = new ReturnData();
+            var result = new DataAccess.DAOImpl.UserDAOImpl()
+                .User_Update(UserAccount, UserPassword, UserFullName, UserAddress, UserPhoneNumber);
+            try
+            {
+                if (result > 0)
+                {
+                    returnData.Description = "Update Successfully !!!";
+                    returnData.ResponseCode = 999;
+                    return Json(returnData, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    returnData.Description = "Update Fail !!!";
+                    returnData.ResponseCode = -998;
+                    return Json(returnData, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (System.Exception)
+            {
+                returnData.Description = "Some thing went wrong !!! please try again";
+                returnData.ResponseCode = -999;
+                return Json(returnData, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
     }
 }

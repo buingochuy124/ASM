@@ -79,6 +79,7 @@ namespace FPTLibrary.Controllers
         public JsonResult RegisterCheck(string UserAccount, string UserPassword, string UserFullName, string UserAddress, string UserPhoneNumber, int RoleID)
         {
             var returnData = new ReturnData();
+            
             var result = new DataAccess.DAOImpl.UserDAOImpl().User_Register(UserAccount, UserPassword, UserFullName, UserAddress, UserPhoneNumber, RoleID);
             try
             {
@@ -92,7 +93,12 @@ namespace FPTLibrary.Controllers
                 {
                     returnData.ResponseCode = 1;
                     returnData.Description = "Register Successfully!!!";
-                    var login = new DataAccess.DAOImpl.UserDAOImpl().User_Login(UserAccount, UserPassword);
+                    if (RoleID == 3)
+                    {
+                        var userID = new DataAccess.DAOImpl.UserDAOImpl().Users_GetList()
+                            .FirstOrDefault(u => u.UserAccount == UserAccount).UserID;
+                        var createNewStore = new DataAccess.DAOImpl.StoreDAOImpl().Store_Create(userID, UserAccount);
+                    }
                     return Json(returnData, JsonRequestBehavior.AllowGet);
                 }
                 else
