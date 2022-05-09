@@ -78,9 +78,9 @@ namespace FPTLibrary.Controllers
             catch (System.Exception)
             {
 
-                throw;
+                return RedirectToAction("Login", "Unauthenticate");
             }
-            
+
         }
     }
 }

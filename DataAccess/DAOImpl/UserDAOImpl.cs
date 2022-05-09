@@ -246,5 +246,9 @@ namespace DataAccess.DAOImpl
             }
         }
 
+        public int User_CheckExist(string UserAccount)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

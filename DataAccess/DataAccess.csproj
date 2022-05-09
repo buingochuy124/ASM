@@ -61,6 +61,7 @@
     <Compile Include="DTO\BookDTO.cs" />
     <Compile Include="DTO\CartDTO.cs" />
     <Compile Include="DTO\CategoryDTO.cs" />
+    <Compile Include="DTO\MailDTO.cs" />
     <Compile Include="DTO\OrderDetailDTO.cs" />
     <Compile Include="DTO\OrderDTO.cs" />
     <Compile Include="DTO\RoleDTO.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Libs\Config.cs" />
     <Compile Include="Libs\MD5.cs" />
+    <Compile Include="Libs\SendMail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

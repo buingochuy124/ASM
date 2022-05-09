@@ -22,7 +22,7 @@ namespace FPTLibrary.Controllers
                 {
                     if (userSession.RoleID != 2)
                     {
-                        if(userSession.RoleID == 3)
+                        if (userSession.RoleID == 3)
                         {
                             var result = new DataAccess.DAOImpl.OrderDAOImpl().Orders_GetListByUser(userSession.UserID);
 
@@ -32,7 +32,7 @@ namespace FPTLibrary.Controllers
                     else
                     {
                         var result = new DataAccess.DAOImpl.OrderDAOImpl().Orders_GetListByUser(userSession.UserID);
-                        
+
                         return View(result);
 
                     }
@@ -45,7 +45,7 @@ namespace FPTLibrary.Controllers
                 throw;
             }
         }
-        public ActionResult OrderDetail(int OrderID,DateTime Date)
+        public ActionResult OrderDetail(int OrderID, DateTime Date)
         {
             var userSession = (UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
             try
@@ -67,7 +67,7 @@ namespace FPTLibrary.Controllers
                         var orderDetail = new DataAccess.DAOImpl.OrderDetaiDAOlImpl().OrderDetail_GetOrderDetail(OrderID);
 
                         var result = new DataAccess.DAOImpl.OrderDAOImpl().Order_GetOrderID(userSession.UserID, Date);
-                        
+
 
                         result.ListOrderDetail = orderDetail;
                         foreach (var item in result.ListOrderDetail)
@@ -79,9 +79,12 @@ namespace FPTLibrary.Controllers
                             item.BookName = new DataAccess.DAOImpl.BookDAOImpl()
                                 .Book_GetDetail(item.BookISBN)
                                 .BookName;
+                            
                             result.Total += item.Quantity * item.BookCost;
-                        }
 
+
+                        }
+                        
                         return View(result);
 
 

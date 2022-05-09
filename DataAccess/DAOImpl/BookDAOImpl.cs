@@ -89,7 +89,7 @@ namespace DataAccess.DAOImpl
             }
         }
 
-        public int Book_SellBook(long BookISBN, string BookName, string Author, double Cost, int Pages, int CategoryID, string Description, string BookImageURL,int StoreID)
+        public int Book_SellBook(long BookISBN, string BookName, string Author, double Cost, int Pages, int CategoryID, string Description, string BookImageURL, int StoreID)
         {
             var result = 0;
 
@@ -189,6 +189,122 @@ namespace DataAccess.DAOImpl
 
 
                     };
+                }
+
+                return result;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public List<BookDTO> Books_Search(string SearchKeyWord)
+        {
+            var result = new List<BookDTO>();
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_SearchListBook", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_SearchKeyWord", SearchKeyWord);
+
+
+                var read = cmd.ExecuteReader();
+                while (read.Read())
+                {
+                    result.Add(new BookDTO
+                    {
+                        BookISBN = long.Parse(read["BookISBN"].ToString()),
+                        BookName = read["BookName"].ToString(),
+                        Cost = double.Parse(read["Cost"].ToString()),
+                        Pages = int.Parse(read["Pages"].ToString()),
+                        CategoryID = int.Parse(read["CategoryID"].ToString()),
+                        BookImageURL = read["BookURL"].ToString(),
+                        Author = read["Author"].ToString(),
+                        BookDescription = read["BookDescription"].ToString(),
+                        StoreID = int.Parse(read["StoreID"].ToString()),
+
+                    });
+                }
+
+                return result;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public List<BookDTO> Books_SearchAndGetListByPage(int? PageNumber, int? NumberPerPage,string Keyword)
+        {
+            var result = new List<BookDTO>();
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_SearchBookAndGetListByPage", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@_PageNumber", PageNumber);
+                cmd.Parameters.AddWithValue("@_NumberPerPage", NumberPerPage);
+                cmd.Parameters.AddWithValue("@_Keyword", Keyword);
+
+
+                var read = cmd.ExecuteReader();
+                while (read.Read())
+                {
+                    result.Add(new BookDTO
+                    {
+                        BookISBN = long.Parse(read["BookISBN"].ToString()),
+                        BookName = read["BookName"].ToString(),
+                        Cost = double.Parse(read["Cost"].ToString()),
+                        Pages = int.Parse(read["Pages"].ToString()),
+                        CategoryID = int.Parse(read["CategoryID"].ToString()),
+                        BookImageURL = read["BookURL"].ToString(),
+                        Author = read["Author"].ToString(),
+                        BookDescription = read["BookDescription"].ToString(),
+                        StoreID = int.Parse(read["StoreID"].ToString()),
+                    });
+                }
+
+                return result;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public List<BookDTO> Book_Search(string Keyword)
+        {
+            var result = new List<BookDTO>();
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_SearchBook", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_Keyword", Keyword);
+
+
+                var read = cmd.ExecuteReader();
+                while (read.Read())
+                {
+                    result.Add(new BookDTO
+                    {
+                        BookISBN = long.Parse(read["BookISBN"].ToString()),
+                        BookName = read["BookName"].ToString(),
+                        Cost = double.Parse(read["Cost"].ToString()),
+                        Pages = int.Parse(read["Pages"].ToString()),
+                        CategoryID = int.Parse(read["CategoryID"].ToString()),
+                        BookImageURL = read["BookURL"].ToString(),
+                        Author = read["Author"].ToString(),
+                        BookDescription = read["BookDescription"].ToString(),
+                        StoreID = int.Parse(read["StoreID"].ToString()),
+                    });
                 }
 
                 return result;

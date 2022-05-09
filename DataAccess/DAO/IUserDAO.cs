@@ -18,5 +18,7 @@ namespace DataAccess.DAO
         int User_Ban(int UserID);
         int User_UnBan(int UserID);
 
+        int User_CheckExist(string UserAccount);
+
     }
 }
