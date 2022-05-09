@@ -28,7 +28,7 @@ namespace FPTLibrary.Controllers
                 {
                     if (userSession.UserID != 2)
                     {
-                        return RedirectToAction("DoNotHavePermission", "Shared");
+                        return RedirectToAction("DoNotHavePermission", "Home");
                     }
                     else
                     {

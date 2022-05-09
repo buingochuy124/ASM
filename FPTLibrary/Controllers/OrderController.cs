@@ -27,7 +27,7 @@ namespace FPTLibrary.Controllers
                             var result = new DataAccess.DAOImpl.OrderDAOImpl().Orders_GetListByUser(userSession.UserID);
 
                         }
-                        return RedirectToAction("DoNotHavePermission", "Shared");
+                        return RedirectToAction("DoNotHavePermission", "Home");
                     }
                     else
                     {
@@ -59,7 +59,7 @@ namespace FPTLibrary.Controllers
                 {
                     if (userSession.RoleID != 2)
                     {
-                        return RedirectToAction("DoNotHavePermission", "Shared");
+                        return RedirectToAction("DoNotHavePermission", "Home");
                     }
                     else
                     {
@@ -67,12 +67,19 @@ namespace FPTLibrary.Controllers
                         var orderDetail = new DataAccess.DAOImpl.OrderDetaiDAOlImpl().OrderDetail_GetOrderDetail(OrderID);
 
                         var result = new DataAccess.DAOImpl.OrderDAOImpl().Order_GetOrderID(userSession.UserID, Date);
-
+                        
 
                         result.ListOrderDetail = orderDetail;
                         foreach (var item in result.ListOrderDetail)
                         {
-                            item.BookCost = new DataAccess.DAOImpl.BookDAOImpl().Book_GetDetail(item.BookISBN).Cost;
+                            item.BookCost = new DataAccess.DAOImpl.BookDAOImpl()
+                                .Book_GetDetail(item.BookISBN)
+                                .Cost;
+
+                            item.BookName = new DataAccess.DAOImpl.BookDAOImpl()
+                                .Book_GetDetail(item.BookISBN)
+                                .BookName;
+                            result.Total += item.Quantity * item.BookCost;
                         }
 
                         return View(result);

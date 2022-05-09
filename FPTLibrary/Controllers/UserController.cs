@@ -21,7 +21,7 @@ namespace FPTLibrary.Controllers
                 {
                     if (userSession.RoleID != 1)
                     {
-                        return RedirectToAction("DoNotHavePermission", "Shared");
+                        return RedirectToAction("DoNotHavePermission", "Home");
                     }
                     else
                     {
@@ -51,7 +51,7 @@ namespace FPTLibrary.Controllers
 
                     if (userSession.RoleID != 1)
                     {
-                        return RedirectToAction("DoNotHavePermission", "Shared");
+                        return RedirectToAction("DoNotHavePermission", "Home");
                     }
                     else
                     {
@@ -65,6 +65,7 @@ namespace FPTLibrary.Controllers
                             item.UserPassword = DataAccess.Libs
                            .MD5
                            .CreateMD5(item.UserPassword);
+                            
                         }
                         return PartialView(result);
                     }
@@ -90,13 +91,13 @@ namespace FPTLibrary.Controllers
                 {
                     if (userSession.RoleID != 1)
                     {
-                        return RedirectToAction("DoNotHavePermission", "Shared");
+                        return RedirectToAction("DoNotHavePermission", "Home");
                     }
                     else
                     {
                         var result = new DataAccess.DAOImpl.UserDAOImpl()
                             .Users_GetList()
-                            .FirstOrDefault(u => u.UserID == userSession.UserID);
+                            .FirstOrDefault(u => u.UserID == UserID);
                         result.RoleName = new DataAccess.DAOImpl.RoleDAOImpl()
                             .Roles_GetList()
                             .FirstOrDefault(r => r.RoleID == result.RoleID).RoleName;
@@ -117,7 +118,7 @@ namespace FPTLibrary.Controllers
         public ActionResult UserEdit(int UserID)
         {
             var result = new DataAccess.DAOImpl.UserDAOImpl()
-                .Users_GetList().FirstOrDefault(u => u.RoleID == UserID);
+                .Users_GetList().FirstOrDefault(u => u.UserID == UserID);
             return View(result);
         }
         public JsonResult UserUpdate(string UserAccount,string UserPassword, string UserFullName,string  UserAddress,string UserPhoneNumber)
@@ -148,6 +149,68 @@ namespace FPTLibrary.Controllers
             }
             
         }
+        public JsonResult UserBan(int UserID)
+        {
+            var returnData = new ReturnData();
+
+            try
+            {
+                var result = new DataAccess.DAOImpl.UserDAOImpl().User_Ban(UserID);
+                if (result > 0)
+                {
+                    returnData.Description = "Banned User !!!";
+                    returnData.ResponseCode = 999;
+                    return Json(returnData, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    returnData.Description = "Banned User Fail !!!";
+                    returnData.ResponseCode = 999;
+                    return Json(returnData, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            catch (System.Exception)
+            {
+
+                returnData.Description = "Some thing went swrong!!! please try aain ";
+                returnData.ResponseCode = 999;
+                return Json(returnData, JsonRequestBehavior.AllowGet); ;
+            }
+         
+            
+        }
+        public JsonResult UserUnBan(int UserID)
+        {
+            var returnData = new ReturnData();
+
+            try
+            {
+                var result = new DataAccess.DAOImpl.UserDAOImpl().User_UnBan(UserID);
+                if (result > 0)
+                {
+                    returnData.Description = "Un Banned User !!!";
+                    returnData.ResponseCode = 999;
+                    return Json(returnData, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    returnData.Description = "Un Banned User Fail !!!";
+                    returnData.ResponseCode = 999;
+                    return Json(returnData, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            catch (System.Exception)
+            {
+
+                returnData.Description = "Some thing went swrong!!! please try aain ";
+                returnData.ResponseCode = 999;
+                return Json(returnData, JsonRequestBehavior.AllowGet); ;
+            }
+
+        }
+
 
     }
 }

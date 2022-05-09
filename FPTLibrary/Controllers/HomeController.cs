@@ -14,22 +14,32 @@ namespace FPTLibrary.Controllers
                 if (userSession == null)
                 {
 
-                    return RedirectToAction("DoNotHavePermission", "Shared");
+                    return RedirectToAction("DoNotHavePermission", "Home");
                 }
                 else
                 {
-                    if (userSession.RoleID == 1)
-                    {
-                        return RedirectToAction("Index", "User");
+                    userSession.IsBanned = new DataAccess.DAOImpl.UserDAOImpl().User_CheckBan(userSession.UserID);
+
+                    if (userSession.IsBanned == true)
+                    {         
+                        return RedirectToAction("DoNotHavePermission", "Home");
                     }
-                    else if (userSession.RoleID == 2)
+
+                    switch (userSession.RoleID)
                     {
-                        return RedirectToAction("Index", "Book");
+                        case 1:
+
+                            return RedirectToAction("Index", "User");
+                        case 2:
+                            return RedirectToAction("Index", "Book");
+                        case 3:
+                            return RedirectToAction("Index", "Store");
+                        default:
+                            return RedirectToAction("Login", "Unauthenticate");
+
                     }
-                    else if (userSession.RoleID == 3)
-                    {
-                        return RedirectToAction("Index", "Store");
-                    }
+
+
                 }
 
             }
@@ -40,15 +50,37 @@ namespace FPTLibrary.Controllers
             }
 
 
-            ViewBag.UserRoleID = userSession.RoleID;
-            return View();
+
         }
 
-        public ActionResult PopupPartial(string title, string msg)
+        public ActionResult DoNotHavePermission()
         {
-            ViewBag.title = title;
-            ViewBag.msg = msg;
-            return PartialView();
+            try
+            {
+                var userSession = (UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
+
+                userSession.IsBanned = new DataAccess.DAOImpl.UserDAOImpl().User_CheckBan(userSession.UserID);
+                if (userSession.IsBanned == true)
+                {
+                    ViewBag.UserBanned = true;
+
+                    Session.RemoveAll();
+                    Session.Abandon();
+
+
+
+
+                }
+                return View();
+
+
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

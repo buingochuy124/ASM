@@ -6,6 +6,7 @@
 <h2>OrderDetail</h2>
 
 
+
 <table class="table" id="myTable">
     <thead>
         <tr>
@@ -14,16 +15,16 @@
                 BookISBN
             </th>
             <th>
+                BookName
+            </th>
+            <th>
                 Quantity
             </th>
 
             <th>
                 Cost
             </th>
-            <th>
-                Book Detail
-            </th>
-
+          
 
 
         </tr>
@@ -38,16 +39,15 @@
                     @item.BookISBN
                 </td>
                 <td>
+                    @item.BookName
+                </td>
+                <td>
                     @item.Quantity
                 </td>
                 <td>
                     @item.BookCost
                 </td>
-                <td>
-                    <a href="/Book/BookDetail?BookISBN=@item.BookISBN">Detail</a>
-
-                    
-                </td>
+              
 
 
             </tr>
@@ -57,7 +57,7 @@
 
     </tbody>
 </table>
-<p2>Total: @Model.Total</p2>
+<h2>Total: @Model.Total</h2>
 
 
 <script>

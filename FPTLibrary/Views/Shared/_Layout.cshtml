@@ -1,5 +1,6 @@
 ﻿@{
-    var userName = @ViewData["UserName"];
+    var user = (DataAccess.DTO.UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
+
 }
 
 
@@ -32,24 +33,59 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Home ", "Index", "Book", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Home ", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
+
+
                 <ul class="nav navbar-nav ">
 
 
-                    <li>@Html.ActionLink("MyCart", "Cart", "Cart")</li>
+                    @{
+                        if (user == null)
+                        {
+                            <li class="nav navbar-right">@Html.ActionLink("Login", "Login", "Unauthenticate")</li>
 
-                    <li>@Html.ActionLink("MyStore", "Index", "Store")</li>
+                        }
+                        else
+                        {
 
-                    <li>@Html.ActionLink("Login", "Login", "Unauthenticate")</li>
 
-                    <li>@Html.ActionLink("Order Record", "OrderRecord", "Order")</li>
+                            if (user.RoleID == 1)
+                            {
+                                <li>@Html.ActionLink("User Management", "Index", "User")</li>
 
-                    <li>@Html.ActionLink("Logout", "Logout", "Unauthenticate")</li>
+                            }
+                            if (user.RoleID == 2)
+                            {
+                                <li>@Html.ActionLink("Order Record", "OrderRecord", "Order")</li>
+                                <li>@Html.ActionLink("MyCart", "Cart", "Cart")</li>
+                            }
+                            if (user.RoleID == 3)
+                            {
+                                <li>@Html.ActionLink("MyStore", "Index", "Store")</li>
+
+                            }
+
+
+                        }
+                    }
+
 
 
                 </ul>
+                @if (user != null)
+                {
+
+
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <li>@Html.ActionLink("Hello " + user.UserFullName, "Login", "Unauthenticate")</li>
+                        <li>@Html.ActionLink("Logout", "Logout", "Unauthenticate")</li>
+
+
+                    </ul>
+                }
             </div>
 
         </div>

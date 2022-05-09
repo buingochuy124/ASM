@@ -66,7 +66,7 @@ namespace DataAccess.DAOImpl
                     result.Add( new DataAccess.DTO.OrderDetailDTO
                     {
 
-                        BookISBN = int.Parse(read["BookISBN"].ToString()),
+                        BookISBN = long.Parse(read["BookISBN"].ToString()),
                         OrderID = int.Parse(read["OrderID"].ToString()),
                         Quantity = int.Parse(read["Quantity"].ToString()),
 

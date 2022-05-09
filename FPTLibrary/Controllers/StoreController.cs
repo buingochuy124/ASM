@@ -25,7 +25,7 @@ namespace FPTLibrary.Controllers
                 {
                     if (userSession.RoleID != 3)
                     {
-                        return RedirectToAction("DoNotHavePermission", "Shared");
+                        return RedirectToAction("DoNotHavePermission", "Home");
                     }
                     else
                     {
@@ -53,7 +53,7 @@ namespace FPTLibrary.Controllers
                 {
                     if (userSession.RoleID != 3)
                     {
-                        return RedirectToAction("DoNotHavePermission", "Shared");
+                        return RedirectToAction("DoNotHavePermission", "Home");
                     }
                     else
                     {

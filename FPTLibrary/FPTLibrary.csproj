@@ -192,7 +192,7 @@
     <Content Include="Views\Unauthenticate\Login.cshtml" />
     <Content Include="Views\Unauthenticate\Register.cshtml" />
     <Content Include="Views\Book\Index.cshtml" />
-    <Content Include="Views\Shared\DoNotHavePermission.cshtml" />
+    <Content Include="Views\Home\DoNotHavePermission.cshtml" />
     <Content Include="Views\Book\BookLibraryParialView.cshtml" />
     <Content Include="Views\Book\BookDetail.cshtml" />
     <Content Include="Views\Cart\Cart.cshtml" />
@@ -204,6 +204,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\UserManagementParialView.cshtml" />
     <Content Include="Views\User\UserDetail.cshtml" />
+    <Content Include="Views\User\UserEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

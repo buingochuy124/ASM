@@ -30,10 +30,45 @@ namespace DataAccess.DAOImpl
                         UserFullName = read["UserFullName"].ToString(),
                         UserAddress = read["UserAddress"].ToString(),
                         UserPhoneNumber = read["UserPhoneNumber"].ToString(),
-                        RoleID = int.Parse(read["RoleID"].ToString())
+                        RoleID = int.Parse(read["RoleID"].ToString()),
+                        IsBanned = bool.Parse(read["IsBanned"].ToString()),
                     });
                 }
                 return result;
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+
+
+        public bool User_CheckBan(int UserID)
+        {
+            var result = true;
+
+
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_UserCheckBan", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_UserID", UserID);
+
+
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+
+
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToBoolean(cmd.Parameters["@_ResponseCode"].Value) : false;
+
+                return result;
+
 
             }
             catch (System.Exception)
@@ -112,6 +147,69 @@ namespace DataAccess.DAOImpl
             }
         }
 
+        public int User_UnBan(int UserID)
+        {
+            var result = 0;
+
+
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_UserUnBan", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_UserID", UserID);
+
+
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+
+
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
+
+                return result;
+
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+        public int User_Ban(int UserID)
+        {
+            var result = 0;
+
+
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_UserBan", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_UserID", UserID);
+
+
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+
+
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
+
+                return result;
+
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
         public int User_Update(string UserAccount, string UserPassword, string UserFullName, string UserAddress, string UserPhoneNumber)
         {
             var result = 0;
@@ -147,5 +245,6 @@ namespace DataAccess.DAOImpl
                 throw;
             }
         }
+
     }
 }

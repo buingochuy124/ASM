@@ -24,10 +24,16 @@
                 Role
             </th>
             <th>
+                Status
+
+            </th>
+            <th>
                 User Detail
             </th>
             <th>
                 Edit
+            </th>
+            <th>
             </th>
         </tr>
     </thead>
@@ -52,10 +58,32 @@
                     @item.RoleName
                 </td>
                 <td>
+                    @if (item.IsBanned == true)
+                    {
+                        <p style="background-color:red;">Banned</p>
+                    }
+                    else
+                    {
+                        <p style="background-color:forestgreen;">Nomal</p>
+                    }
+                </td>
+                <td>
                     <a href="/User/UserDetail?UserID=@item.UserID">Detail</a>
                 </td>
                 <td>
-                    <a href="/User/UserEdit?UserID=@item.UserID">Detail</a>
+                    <a href="/User/UserEdit?UserID=@item.UserID">Edit</a>
+                </td>
+
+                <td>
+                    @if (item.IsBanned == true)
+                    {
+                        <a id="ban" href="/User/UserUnBan?UserID=@item.UserID">UnBan</a>
+                    }
+                    else
+                    {
+                        <a id="Unban" href="/User/UserBan?UserID=@item.UserID">Ban</a>
+
+                    }
                 </td>
 
 
@@ -68,4 +96,8 @@
     $(document).ready(function () {
         $('#myTable').DataTable();
     });
+  
+
 </script>
+
+

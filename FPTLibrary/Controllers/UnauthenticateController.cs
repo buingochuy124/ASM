@@ -9,6 +9,7 @@ namespace FPTLibrary.Controllers
     {
         // GET: Unauthenticate
         public ActionResult Index()
+        
         {
             return View();
         }
@@ -62,9 +63,11 @@ namespace FPTLibrary.Controllers
 
             catch (System.Exception)
             {
-                returnData.ResponseCode = -999;
-                returnData.Description = "System Bussy. please  f5";
-                return Json(returnData, JsonRequestBehavior.AllowGet);
+
+                throw;
+                //returnData.ResponseCode = -999;
+                //returnData.Description = "System Bussy. please  f5";
+                //return Json(returnData, JsonRequestBehavior.AllowGet);
             }
         }
 

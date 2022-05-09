@@ -10,5 +10,6 @@
         public string UserPhoneNumber { get; set; }
         public int RoleID { get; set; }
         public string RoleName { get; set; }
+        public bool IsBanned { get;set; }
     }
 }

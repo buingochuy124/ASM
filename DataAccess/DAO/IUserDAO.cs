@@ -12,5 +12,11 @@ namespace DataAccess.DAO
         List<UserDTO> Users_GetList();
 
         int User_Update(string UserAccount, string UserPassword, string UserFullName, string UserAddress, string UserPhoneNumber);
+
+        bool User_CheckBan(int UserID);
+
+        int User_Ban(int UserID);
+        int User_UnBan(int UserID);
+
     }
 }
