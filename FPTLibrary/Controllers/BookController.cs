@@ -24,6 +24,7 @@ namespace FPTLibrary.Controllers
                     }
                     else
                     {
+
                         return View();
                     }
                 }
@@ -34,6 +35,7 @@ namespace FPTLibrary.Controllers
                 throw;
             }
         }
+
         public ActionResult BookLibraryPartialView(int? PageNumber, int? NumberPerPage, string Keyword)
         {
             var userSession = (UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
@@ -53,61 +55,32 @@ namespace FPTLibrary.Controllers
                     }
                     else
                     {
-                        if (Keyword == null)
+
+
+                        if (PageNumber == null && NumberPerPage == null)
                         {
-
-                            if (PageNumber == null && NumberPerPage == null)
-                            {
-                                PageNumber = 1;
-                                NumberPerPage = 6;
-                            }
-
-                            result = new DataAccess.DAOImpl.BookDAOImpl().Books_GetListByPage(PageNumber, NumberPerPage);
-                            ViewBag.CurrentPage = PageNumber;
-                            ViewBag.NumberPerPage = NumberPerPage;
-                            ViewBag.EndPage = (new DataAccess.DAOImpl.BookDAOImpl().Books_GetList().Count) / NumberPerPage + 1;
-                            ViewBag.Keyword = Keyword;
-                            if (PageNumber > ViewBag.EndPage)
-                            {
-                                return HttpNotFound();
-                            }
-                            foreach (var item in result)
-                            {
-                                item.CategoryName = new DataAccess.DAOImpl.CategoryDAOImpl()
-                                    .Category_GetDetailByID(item.CategoryID).CategoryName;
-                            }
-
-                            return PartialView(result);
+                            PageNumber = 1;
+                            NumberPerPage = 6;
                         }
 
-                        else
+                        result = new DataAccess.DAOImpl.BookDAOImpl().Books_GetListByPage(PageNumber, NumberPerPage);
+                        ViewBag.CurrentPage = PageNumber;
+                        ViewBag.NumberPerPage = NumberPerPage;
+                        ViewBag.EndPage = (new DataAccess.DAOImpl.BookDAOImpl().Books_GetList().Count) / NumberPerPage + 1;
+                        ViewBag.Keyword = Keyword;
+                        if (PageNumber > ViewBag.EndPage)
                         {
-                            return RedirectToAction("BookSearch", "bOOK");
-
-                            if (PageNumber == null && NumberPerPage == null)
-                            {
-                                PageNumber = 1;
-                                NumberPerPage = 6;
-                            }
-
-                            result = new DataAccess.DAOImpl.BookDAOImpl()
-                                .Books_SearchAndGetListByPage(PageNumber, NumberPerPage, Keyword.Trim());
-                            ViewBag.CurrentPage = PageNumber;
-                            ViewBag.NumberPerPage = NumberPerPage;
-                            ViewBag.EndPage = (new DataAccess.DAOImpl.BookDAOImpl().Book_Search(Keyword).Count) / NumberPerPage + 1;
-                            if (PageNumber > ViewBag.EndPage)
-                            {
-                                return HttpNotFound();
-                            }
-
-                            foreach (var item in result)
-                            {
-                                item.CategoryName = new DataAccess.DAOImpl.CategoryDAOImpl()
-                                    .Category_GetDetailByID(item.CategoryID).CategoryName;
-                            }
-
-                            return PartialView(result);
+                            return HttpNotFound();
                         }
+                        foreach (var item in result)
+                        {
+                            item.CategoryName = new DataAccess.DAOImpl.CategoryDAOImpl()
+                                .Category_GetDetailByID(item.CategoryID).CategoryName;
+                        }
+
+                        return PartialView(result);
+
+
                     }
                 }
             }
@@ -150,37 +123,34 @@ namespace FPTLibrary.Controllers
         public ActionResult BookSearch(int? PageNumber, int? NumberPerPage, string Keyword)
         {
 
-
-
-
-            return RedirectToAction("DoNotHavePermission", "Home");
-
-
-
-
-            var userSession = (UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
-            if (userSession == null)
+            var result = new List<BookDTO>();
+          
+            if (PageNumber == null && NumberPerPage == null)
             {
-                return RedirectToAction("Login", "Unauthenticate");
-            }
-            else
-            {
-
-                var books = new DataAccess.DAOImpl.BookDAOImpl().Books_Search(SearchString);
-
-                if (userSession.RoleID != 2)
-                {
-
-                    return RedirectToAction("DoNotHavePermission", "Home");
-                }
-                else
-                {
-                    return View(books);
-
-                }
-
+                PageNumber = 1;
+                NumberPerPage = 6;
             }
 
+            result = new DataAccess.DAOImpl.BookDAOImpl()
+                .Books_SearchAndGetListByPage(PageNumber, NumberPerPage, Keyword.Trim());
+            ViewBag.CurrentPage = PageNumber;
+            ViewBag.NumberPerPage = NumberPerPage;
+            ViewBag.EndPage = (new DataAccess.DAOImpl.BookDAOImpl().Book_Search(Keyword).Count) / NumberPerPage + 1;
+            ViewBag.Keyword = Keyword;
+
+
+            if (PageNumber > ViewBag.EndPage)
+            {
+                return HttpNotFound();
+            }
+
+            foreach (var item in result)
+            {
+                item.CategoryName = new DataAccess.DAOImpl.CategoryDAOImpl()
+                    .Category_GetDetailByID(item.CategoryID).CategoryName;
+            }
+
+            return View(result);
 
 
 

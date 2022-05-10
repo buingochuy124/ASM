@@ -1,7 +1,6 @@
 ﻿@{
     ViewBag.Title = "Index";
-    var key = ViewBag.KeyWord;
-
+    var key = ViewBag.Keyword;
 }
 <h2>BookLibrary</h2>
 
@@ -13,12 +12,21 @@
 
 <br />
 
-<div>
-    <label>Search</label>
+@*<div>
     <input value="@key" type="text" id="keyword">
-    <input type="button" value="Search" id="btn_submit">
-</div>
+    <a href="/Book/BookSearch?Keyword=">
+        <input type="button" href="" value="Search" id="btn_submit">
+    </a>
+</div>*@
+
+<form  action="Book/BookSearch"  method="get">
+    <p>
+        Search: <input type="text" name="Keyword" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
 <br />
+
 
 <div>
 
@@ -29,7 +37,16 @@
 
 
 
-<script>
+
+
+
+
+
+
+
+
+
+@*<script>
     $(document).ready(function () {
         $("#btn_submit").click(function () {
             btn_submit();
@@ -44,7 +61,6 @@
 
         var data = {
             Keyword: Keyword,
-
         };
 
 
@@ -56,7 +72,7 @@
             cache: false,
             url: "/Book/BookSearch",
             data: data,    // multiple data sent using ajax
-
+            
         });
     }
-</script>
+</script>*@

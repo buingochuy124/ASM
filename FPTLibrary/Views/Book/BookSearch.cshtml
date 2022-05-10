@@ -1,4 +1,13 @@
 ﻿
+@{
+    ViewBag.Title = "BookSearch";
+    var key = ViewBag.Keyword;
+
+}
+
+<h2>BookSearch</h2>
+
+
 
 
 @{
@@ -8,7 +17,16 @@
     var nRow = (int)Math.Ceiling((double)Model.Count / a);
 }
 
+<br />
 
+<form action="/Book/BookSearch" method="get">
+    <p>
+        Search: <input type="text" name="Keyword" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+<br />
+<br />
 
 <div class="container">
     @for (int i = 0; i < nRow; i++)
