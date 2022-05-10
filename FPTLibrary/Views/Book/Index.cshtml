@@ -12,6 +12,12 @@
 
 <br />
 
+<div>
+    <label>Search</label>
+    <input value="@key" type="text" id="keyword">
+    <input type="button" value="Search" id="btn_submit">
+</div>
+<br />
 @*<div>
     <input value="@key" type="text" id="keyword">
     <a href="/Book/BookSearch?Keyword=">
@@ -27,6 +33,43 @@
 </form>
 <br />
 
+
+<div>
+
+    @Html.Action("BookLibraryPartialView")
+
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#btn_submit").click(function () {
+            btn_submit();
+        });
+    });
+
+
+
+    function btn_submit() {
+
+        var Keyword = $("#keyword").val();
+
+        var data = {
+            Keyword: Keyword,
+
+        };
+
+
+
+
+
+        $.ajax({
+            type: "GET", // GET / POST / DELETE
+            cache: false,
+            url: "/Book/BookSearch",
+            data: data,    // multiple data sent using ajax
 
 <div>
 
