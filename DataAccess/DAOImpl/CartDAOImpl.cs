@@ -29,6 +29,7 @@ namespace DataAccess.DAOImpl
 
                         BookISBN = long.Parse(read["BookISBN"].ToString()),
                         UserID = int.Parse(read["UserID"].ToString()),
+                        Quantity = int.Parse(read["Quantity"].ToString()),
 
 
                     });
@@ -87,6 +88,34 @@ namespace DataAccess.DAOImpl
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@_UserID", UserID);
+
+
+                cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;
+
+
+                cmd.ExecuteNonQuery();
+
+                result = cmd.Parameters["@_ResponseCode"].Value != null ? Convert.ToInt32(cmd.Parameters["@_ResponseCode"].Value) : 0;
+
+                return result;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+        public int Cart_Update(long BookISBN,int Quantity)
+        {
+            var result = 0;
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_CartUpdate", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_BookISBN", BookISBN);
+                cmd.Parameters.AddWithValue("@_Quantity", Quantity);
 
 
                 cmd.Parameters.Add("@_ResponseCode", System.Data.SqlDbType.Int).Direction = System.Data.ParameterDirection.Output;

@@ -169,6 +169,7 @@
     </Compile>
     <Compile Include="Models\ReturnData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\SellerOrderVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -215,7 +216,6 @@
     <Content Include="Views\Unauthenticate\Register.cshtml" />
     <Content Include="Views\Book\Index.cshtml" />
     <Content Include="Views\Home\DoNotHavePermission.cshtml" />
-    <Content Include="Views\Book\BookLibraryParialView.cshtml" />
     <Content Include="Views\Book\BookDetail.cshtml" />
     <Content Include="Views\Cart\Cart.cshtml" />
     <Content Include="Views\Cart\BookInCartPartialView.cshtml" />
@@ -228,6 +228,9 @@
     <Content Include="Views\User\UserDetail.cshtml" />
     <Content Include="Views\User\UserEdit.cshtml" />
     <Content Include="Views\Unauthenticate\ConfirmMail.cshtml" />
+    <Content Include="Views\Book\BookSearch.cshtml" />
+    <Content Include="Views\Store\StoreOrder.cshtml" />
+    <Content Include="Views\Book\BookLibraryPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

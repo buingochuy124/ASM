@@ -30,7 +30,7 @@ namespace DataAccess.DAOImpl
                 var read = cmd.ExecuteReader();
                 while (read.Read())
                 {
-                    result.Add (new OrderDTO
+                    result.Add(new OrderDTO
                     {
 
                         OrderID = int.Parse(read["OrderID"].ToString()),
@@ -86,6 +86,46 @@ namespace DataAccess.DAOImpl
             }
         }
 
+        public OrderDTO Order_GetOrderByID(int OrderID)
+        {
+            var result = new DataAccess.DTO.OrderDTO();
+
+
+            try
+            {
+                var sqlconn = ConnectDB.GetSqlConnection();
+
+                SqlCommand cmd = new SqlCommand("SP_GetOrderByID", sqlconn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_OrderID", OrderID);
+
+
+
+                var read = cmd.ExecuteReader();
+                while (read.Read())
+                {
+                    result = (new OrderDTO
+                    {
+
+                        OrderID = int.Parse(read["OrderID"].ToString()),
+                        UserID = int.Parse(read["UserID"].ToString()),
+                        Total = double.Parse(read["Total"].ToString()),
+                        Date = DateTime.Parse(read["Date"].ToString()),
+
+                    });
+                }
+
+                return result;
+
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
         public OrderDTO Order_GetOrderID(int UserID, DateTime Date)
         {
             var result = new DataAccess.DTO.OrderDTO();
@@ -113,7 +153,7 @@ namespace DataAccess.DAOImpl
                         UserID = int.Parse(read["UserID"].ToString()),
                         Total = double.Parse(read["Total"].ToString()),
                         Date = DateTime.Parse(read["Date"].ToString()),
-                    
+
                     });
                 }
 

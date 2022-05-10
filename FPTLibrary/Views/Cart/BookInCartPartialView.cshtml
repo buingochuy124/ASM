@@ -18,7 +18,7 @@
                 Quantity
 
             </th>
-          
+
 
 
         </tr>
@@ -39,19 +39,18 @@
                 </td>
                 <td>
 
-                    <input type="number"  id="quantity_@i" value="1" min="1" max="10"/>
+                    <input type="number" id="quantity_@i" value="@Model[i].Quantity" min="1" max="10" />
 
                 </td>
 
-
-
             </tr>
         }
-     
+
     </tbody>
 </table>
 
 <input type="button" value="CheckOut" id="btn_submit">
+<input type="button" id="btn_update" value="update cart" />
 
 
 
@@ -67,11 +66,41 @@
         $("#btn_submit").click(function () {
             btn_submit();
         });
-
+        $("#btn_update").click(function () {
+            btn_update();
+        });
 
     });
 
+    function btn_update() {
+        var quantity = "";
+        var funtionCount = '@Model.Count';
+        for (var i = 0; i < parseInt(funtionCount, 10); i++) {
+            quantity += $("#quantity_" + i).val() + "_";
+        }
 
+        var data = {
+            Quantity: quantity
+        };
+
+
+        $.ajax({
+            type: "GET", // GET / POST / DELETE
+            cache: false,
+            url: "/Cart/CartUpdate",
+            data: data,    // multiple data sent using ajax
+            success: function (data) {
+                var res = data.ResponseCode;
+                var des = data.Description;
+
+                alert(des);
+                setTimeout(function () {
+                    window.location.href = "/Cart/Cart";
+                }, 1000);
+
+            }
+        });
+    }
 
 
     function btn_submit() {

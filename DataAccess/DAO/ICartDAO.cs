@@ -10,5 +10,8 @@ namespace DataAccess.DAO
         List<CartDTO> Carts_GetCartByUser(int UserID);
 
         int Cart_CheckOut(int UserID);
+
+        int Cart_Update(long BookISBN, int Quantity);
+
     }
 }

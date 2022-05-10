@@ -2,6 +2,7 @@
 using FPTLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
 using System.Web.Mvc;
 
@@ -33,6 +34,8 @@ namespace FPTLibrary.Controllers
                     else
                     {
                         var result = new DataAccess.DAOImpl.CartDAOImpl().Carts_GetCartByUser(userSession.UserID);
+                        result.ForEach(r => r.Quantity = new DataAccess.DAOImpl.CartDAOImpl().Carts_GetCartByUser(userSession.UserID)
+                        .FirstOrDefault(b => b.BookISBN == r.BookISBN).Quantity);
                         ViewBag.User = userSession;
                         return View(result);
                     }
@@ -41,8 +44,8 @@ namespace FPTLibrary.Controllers
             }
             catch (Exception)
             {
-
                 throw;
+                //return RedirectToAction("DoNotHavePermission", "Home");
             }
 
         }
@@ -63,12 +66,7 @@ namespace FPTLibrary.Controllers
                     returnData.Description = "Added Book to cart";
                     return Json(returnData, JsonRequestBehavior.AllowGet);
                 }
-                else if (result == -1)
-                {
-                    returnData.ResponseCode = -99;
-                    returnData.Description = "Book Already in cart!! Please try again";
-                    return Json(returnData, JsonRequestBehavior.AllowGet);
-                }
+              
                 else
                 {
                     returnData.ResponseCode = -999;
@@ -85,6 +83,33 @@ namespace FPTLibrary.Controllers
                 returnData.Description = "System Bussy!! Please try again";
                 return Json(returnData, JsonRequestBehavior.AllowGet);
             }
+        }
+        public JsonResult CartUpdate(string Quantity)
+        {
+            var returnData = new ReturnData();
+
+            try
+            {
+                var userSession = (UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
+                var quantity = 0;
+                var cart = new DataAccess.DAOImpl.CartDAOImpl().Carts_GetCartByUser(userSession.UserID);
+                for (int i = 0; i < cart.Count; i++)
+                {
+                    quantity = int.Parse(Quantity.Split('_')[i]);
+                    var updatecart = new DataAccess.DAOImpl.CartDAOImpl().Cart_Update(cart[i].BookISBN, quantity);
+
+
+                }
+                returnData.Description = "Update Successfully";
+                return Json(returnData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                returnData.Description = "Update Fail!! something wrong";
+                return Json(returnData, JsonRequestBehavior.AllowGet);
+            }
+         
+
         }
         public ActionResult BookInCartPartialView()
         {
@@ -105,7 +130,8 @@ namespace FPTLibrary.Controllers
                     {
                         result.Add(new DataAccess.DAOImpl.BookDAOImpl().Book_GetDetail(item.BookISBN));
                     }
-
+                    result.ForEach(r => r.Quantity = new DataAccess.DAOImpl.CartDAOImpl()
+                    .Carts_GetCartByUser(userSession.UserID).FirstOrDefault(b => b.BookISBN == r.BookISBN).Quantity);
                     return PartialView(result);
 
                 }
@@ -152,21 +178,24 @@ namespace FPTLibrary.Controllers
                     Body += $"{userSession.UserFullName} buy {item.Quantity} of {item.BookName} with total: {(item.Quantity * item.Cost) } \n";
                 }
 
-                DataAccess.Libs.SendMail.SendMailToAccount(Body, "buingochuy124@gmail.com");
+                
 
-                MailMessage mail = new MailMessage();
-                mail.To.Add(userSession.UserFullName);
-                mail.From = new MailAddress("buingochuy124@gmail.com");
-                mail.Subject = "Order Book";
-                mail.Body = Body;
-                mail.IsBodyHtml = true;
-                SmtpClient smtp = new SmtpClient();
-                smtp.Host = "smtp.gmail.com";
-                smtp.Port = 587;
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new System.Net.NetworkCredential("buingochuy124@gmail.com", "su24122000");
-                smtp.EnableSsl = true;
-                smtp.Send(mail);
+
+                //DataAccess.Libs.SendMail.SendMailToAccount(Body, "buingochuy124@gmail.com");
+
+                //MailMessage mail = new MailMessage();
+                //mail.To.Add(userSession.UserFullName);
+                //mail.From = new MailAddress("buingochuy124@gmail.com");
+                //mail.Subject = "Order Book";
+                //mail.Body = Body;
+                //mail.IsBodyHtml = true;
+                //SmtpClient smtp = new SmtpClient();
+                //smtp.Host = "smtp.gmail.com";
+                //smtp.Port = 587;
+                //smtp.UseDefaultCredentials = false;
+                //smtp.Credentials = new System.Net.NetworkCredential("buingochuy124@gmail.com", "su24122000");
+                //smtp.EnableSsl = true;
+                //smtp.Send(mail);
 
                 //Client.Credentials = new NetworkCredential("mymailid", "mypassword", "smtp.gmail.com");
                 //client.Host = "smtp.gmail.com";

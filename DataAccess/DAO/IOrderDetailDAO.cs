@@ -11,5 +11,7 @@ namespace DataAccess.DAO
         int OrderDetail_Create(long BookISBN, int Quantity,int OderID);
 
         List<DataAccess.DTO.OrderDetailDTO> OrderDetail_GetOrderDetail(int OrderID);
+
+        List<DataAccess.DTO.OrderDetailDTO> OrderDetail_GetList();
     }
 }

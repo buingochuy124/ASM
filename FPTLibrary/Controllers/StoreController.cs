@@ -86,6 +86,64 @@ namespace FPTLibrary.Controllers
                 throw;
             }
         }
+        public ActionResult StoreOrder()
+        {
+            var userSession = (UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
+            var result = new List<FPTLibrary.ViewModels.SellerOrderVM>();
+            try
+            {
+                if (userSession == null)
+                {
+                    return RedirectToAction("Login", "Unauthenticate");
+                }
+                else
+                {
+                    if (userSession.RoleID != 3)
+                    {
+                        return RedirectToAction("DoNotHavePermission", "Home");
+                    }
+                    else
+                    {
+
+                        var storeID = new DataAccess.DAOImpl.StoreDAOImpl().Store_GetStoreByUser(userSession.UserID).StoreID;
+                        var listBookOfStore = new DataAccess.DAOImpl.BookDAOImpl().Books_GetList().Where(b => b.StoreID == storeID).ToList();
+
+                        var ListOrder = new DataAccess.DAOImpl.OrderDetaiDAOlImpl().OrderDetail_GetList();
+
+                        foreach (var item in ListOrder)
+                        {
+                            var book = new DataAccess.DAOImpl.BookDAOImpl().Book_GetDetail(item.BookISBN);
+                            if (book.StoreID == storeID)
+                            {
+                                result.Add(new FPTLibrary.ViewModels.SellerOrderVM
+                                {
+                                    Book = book,
+                                    Quantity = item.Quantity,
+                                    UserID = new DataAccess.DAOImpl.OrderDAOImpl().Order_GetOrderByID(item.OrderID).UserID
+                                });
+                            }
+
+                        }
+
+                        result.ForEach(r => r.UserFullName = new DataAccess.DAOImpl.UserDAOImpl().Users_GetList()
+                                 .FirstOrDefault(u => u.UserID == r.UserID)
+                                 .UserFullName);
+
+                        result.ForEach(r => r.UserAddress = new DataAccess.DAOImpl.UserDAOImpl().Users_GetList()
+                                 .FirstOrDefault(u => u.UserID == r.UserID)
+                                 .UserAddress);
+                        
+                        return View(result.OrderBy(u=>u.UserID).ToList());
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
         public ActionResult BookDelete(long BookISBN)
         {
             try
@@ -155,8 +213,8 @@ namespace FPTLibrary.Controllers
                         var bookImageURL = ws.Cells[rw, 8].Value != null ? ws.Cells[rw, 8].Value.ToString() : string.Empty;
 
                         var createCategory = new DataAccess.DAOImpl.CategoryDAOImpl().Category_Create(categoryName);
-                        var categoryID = new DataAccess.DAOImpl.CategoryDAOImpl().Category_GetDetailByName(categoryName).CategoryID;                      
-                        var result = new DataAccess.DAOImpl.BookDAOImpl().Book_SellBook(long.Parse(bookISBN), title, author, double.Parse(bookCost), int.Parse(bookPages), categoryID, bookDescription, bookImageURL,storeID);
+                        var categoryID = new DataAccess.DAOImpl.CategoryDAOImpl().Category_GetDetailByName(categoryName).CategoryID;
+                        var result = new DataAccess.DAOImpl.BookDAOImpl().Book_SellBook(long.Parse(bookISBN), title, author, double.Parse(bookCost), int.Parse(bookPages), categoryID, bookDescription, bookImageURL, storeID);
 
                         var err_des = "";
                         try
