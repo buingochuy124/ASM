@@ -7,7 +7,6 @@ namespace FPTLibrary.Controllers
 {
     public class BookController : Controller
     {
-        // GET: Book
         public ActionResult Index()
         {
             var userSession = (UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
@@ -35,9 +34,11 @@ namespace FPTLibrary.Controllers
                 throw;
             }
         }
-        public ActionResult BookLibraryParialView(int? PageNumber, int? NumberPerPage,string Keyword)
+        public ActionResult BookLibraryPartialView(int? PageNumber, int? NumberPerPage, string Keyword)
         {
             var userSession = (UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
+            var result = new List<BookDTO>();
+
             try
             {
                 if (userSession == null)
@@ -52,18 +53,20 @@ namespace FPTLibrary.Controllers
                     }
                     else
                     {
-                        if(Keyword == null)
+                        if (Keyword == null)
                         {
+
                             if (PageNumber == null && NumberPerPage == null)
                             {
                                 PageNumber = 1;
                                 NumberPerPage = 6;
                             }
 
-                            var result = new DataAccess.DAOImpl.BookDAOImpl().Books_GetListByPage(PageNumber, NumberPerPage);
+                            result = new DataAccess.DAOImpl.BookDAOImpl().Books_GetListByPage(PageNumber, NumberPerPage);
                             ViewBag.CurrentPage = PageNumber;
                             ViewBag.NumberPerPage = NumberPerPage;
                             ViewBag.EndPage = (new DataAccess.DAOImpl.BookDAOImpl().Books_GetList().Count) / NumberPerPage + 1;
+                            ViewBag.Keyword = Keyword;
                             if (PageNumber > ViewBag.EndPage)
                             {
                                 return HttpNotFound();
@@ -76,15 +79,18 @@ namespace FPTLibrary.Controllers
 
                             return PartialView(result);
                         }
+
                         else
                         {
+                            return RedirectToAction("BookSearch", "bOOK");
+
                             if (PageNumber == null && NumberPerPage == null)
                             {
                                 PageNumber = 1;
                                 NumberPerPage = 6;
                             }
 
-                            var result2 = new DataAccess.DAOImpl.BookDAOImpl()
+                            result = new DataAccess.DAOImpl.BookDAOImpl()
                                 .Books_SearchAndGetListByPage(PageNumber, NumberPerPage, Keyword.Trim());
                             ViewBag.CurrentPage = PageNumber;
                             ViewBag.NumberPerPage = NumberPerPage;
@@ -94,13 +100,13 @@ namespace FPTLibrary.Controllers
                                 return HttpNotFound();
                             }
 
-                            foreach (var item in result2)
+                            foreach (var item in result)
                             {
                                 item.CategoryName = new DataAccess.DAOImpl.CategoryDAOImpl()
                                     .Category_GetDetailByID(item.CategoryID).CategoryName;
                             }
 
-                            return PartialView(result2);
+                            return PartialView(result);
                         }
                     }
                 }
@@ -141,8 +147,17 @@ namespace FPTLibrary.Controllers
             return View();
         }
 
-        public ActionResult BookSearch(string SearchString)
+        public ActionResult BookSearch(int? PageNumber, int? NumberPerPage, string Keyword)
         {
+
+
+
+
+            return RedirectToAction("DoNotHavePermission", "Home");
+
+
+
+
             var userSession = (UserDTO)Session[DataAccess.Libs.Config.SessionAccount];
             if (userSession == null)
             {
@@ -165,6 +180,9 @@ namespace FPTLibrary.Controllers
                 }
 
             }
+
+
+
 
         }
     }

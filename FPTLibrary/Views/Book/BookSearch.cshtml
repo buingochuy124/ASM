@@ -1,22 +1,14 @@
 ﻿
-@model List<DataAccess.DTO.BookDTO>
+
 
 @{
 
     var a = 3;
     var n = Model.Count;
     var nRow = (int)Math.Ceiling((double)Model.Count / a);
-    var key = ViewBag.KeyWord;
 }
 
 
-<div>
-    <label >Search</label>
-    <input  value="@key" type="text" id="keyword">
-    <input type="button" value="Search " id="btn_submit">
-
-</div>
-<br />
 
 <div class="container">
     @for (int i = 0; i < nRow; i++)
@@ -36,9 +28,6 @@
                                 <h5 class="card-title">Title: @Model[j].BookName</h5>
                                 <p class="card-text">Cost: @Model[j].Cost $</p>
                                 @*<p class="card-text">Category: @Model[j].CategoryName</p>*@
-                                <p class="card-text">Pages: @Model[j].Pages</p>
-                                <p class="card-text">ISBN: @Model[j].BookISBN</p>
-                                <p class="card-text">Author: @Model[j].Author</p>
                                 <p class="card-text">
                                     Description: @Model[j].BookDescription.ToString().Substring(0, 100)
                                     <a href="/Book/BookDetail?BookISBN=@Model[j].BookISBN">Read More...</a>
@@ -69,24 +58,24 @@
     <div style="display:flex;text-align:center;justify-content:center">
         <nav aria-label="Page navigation example ">
             <ul class="pagination">
-                <li value="submit" class="page-item"><a class="page-link" href="/Book/Index?PageNumber=1&NumberPerPage=@ViewBag.NumberPerPage">First</a></li>
+                <li value="submit" class="page-item"><a class="page-link" href="/Book/BookLibrary?PageNumber=1&NumberPerPage=@ViewBag.NumberPerPage">First</a></li>
 
                 @{
                     if (ViewBag.CurrentPage != 1)
                     {
-                        <li value="submit"  class="page-item"><a class="page-link" href="/Book/Index?PageNumber=@(ViewBag.CurrentPage-1)&NumberPerPage=@ViewBag.NumberPerPage">@(ViewBag.CurrentPage - 1)</a></li>
+                        <li value="submit" class="page-item"><a class="page-link" href="/Book/BookLibrary?PageNumber=@(ViewBag.CurrentPage-1)&NumberPerPage=@ViewBag.NumberPerPage">@(ViewBag.CurrentPage - 1)</a></li>
 
                     }
                 }
-                <li value="submit"  class="page-item active"><a class="page-link" href="/Book/Index?PageNumber=@ViewBag.CurrentPage&NumberPerPage=@ViewBag.NumberPerPage">@ViewBag.CurrentPage</a></li>
+                <li value="submit" class="page-item active"><a class="page-link" href="/Book/BookLibrary?PageNumber=@ViewBag.CurrentPage&NumberPerPage=@ViewBag.NumberPerPage">@ViewBag.CurrentPage</a></li>
 
                 @{
                     if (ViewBag.CurrentPage < (@ViewBag.EndPage - 1))
                     {
-                        <li value="submit"  class="page-item"><a class="page-link" href="/Book/Index?PageNumber=@(ViewBag.CurrentPage+1)&NumberPerPage=@ViewBag.NumberPerPage">@(ViewBag.CurrentPage + 1)</a></li>
+                        <li value="submit" class="page-item"><a class="page-link" href="/Book/BookLibrary?PageNumber=@(ViewBag.CurrentPage+1)&NumberPerPage=@ViewBag.NumberPerPage">@(ViewBag.CurrentPage + 1)</a></li>
                     }
                 }
-                <li value="submit" class="page-item"><a class="page-link" href="/Book/Index?PageNumber=@(ViewBag.EndPage-1)&NumberPerPage=@ViewBag.NumberPerPage">End</a></li>
+                <li value="submit" class="page-item"><a class="page-link" href="/Book/BookLibrary?PageNumber=@(ViewBag.EndPage-1)&NumberPerPage=@ViewBag.NumberPerPage">End</a></li>
             </ul>
         </nav>
     </div>
@@ -97,35 +86,3 @@
 
 
 
-
-<script>
-    $(document).ready(function () {
-        $("#btn_submit").click(function () {
-            btn_submit();
-        });
-    });
-
-
-
-    function btn_submit() {
-
-        var Keyword = $("#keyword").val();
-
-        var data = {
-
-            Keyword: Keyword,
-        };
-
-
-
-
-
-        $.ajax({
-            type: "GET", // GET / POST / DELETE
-            cache: false,
-            url: "/Book/BookLibraryParialView",
-            data: data,    // multiple data sent using ajax
-         
-        });
-    }
-</script>

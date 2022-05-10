@@ -15,6 +15,7 @@ namespace DataAccess.DAO
 
         OrderDTO Order_GetOrderID(int UserID,DateTime Date);
 
+        OrderDTO Order_GetOrderByID(int OrderID);
 
     }
 }
